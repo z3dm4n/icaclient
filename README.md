@@ -1,30 +1,22 @@
 # Citrix ICA-Client
 
-## Build the container
+## 0. Prep
 
-### ICA-Client and License
+Download the client and put it into this repo.
 
-In the `CITRIX LICENSE AGREEMENT` stored in file `LICENSE`, there is no
-prohibition of distribution of the icaclient. So I suppose, I am
-allowed to distribute it, as long as you follow the license
-restrictions, i.e. you only use it for the Citrix products it is
-intended to be used with. Therefore the icaclient is part of this
-repository. So you must accept the `LICENSE` if you use this docker
-container.
-
-Otherwise, you could also download the client from:
-
+Download URL:
 https://www.citrix.com/downloads/workspace-app/linux/workspace-app-for-linux-latest.html
 
-### Build command
+## 1. Build
 
 As usual:
 
        docker build --rm --force-rm -t z3dm4n/icaclient .
 
-## Usage
+## 2. Use
 
 Since it is a X11 GUI software, usage is in two steps:
+
   1. Run a background container as server (only required once).
 
         `docker run -d --name icaclient z3dm4n/icaclient`
