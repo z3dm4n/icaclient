@@ -1,54 +1,31 @@
 # Citrix ICA-Client
 
-> **Note:** This project is not continued, since my employer switched to
-> VMware Horizon. I still accept pull requests. If you need a more up to
-> date version, either update yourself and send me a pull request, or
-> look at the forks, or see [Marvin's](https://github.com/MarvAmBass)
-> [different client](https://github.com/DesktopContainers/icaclient),
-> which he will continue to support.
+## 0. Prep
 
-Citrix icaclient is a terribly bad designed an terribly bad
-implemented tool for remote desktop connections. It is a 32-bit
-Firefox plugin, even on 64-bit Linux systems, so it corrupts your
-operating system, or at least your Firefox installation. Even then, it
-need fixes and most of the time, it does not work.  Still I have to
-use it on work. So I want to run it in a well defined environment:
-Encapsulate in a docker container.
+Download the client and put it into this repo.
 
-## Build the container
+Download URL:
+https://www.citrix.com/downloads/workspace-app/linux/workspace-app-for-linux-latest.html
 
-### ICA-Client and License
-
-In the `CITRIX LICENSE AGREEMENT` stored in file `LICENSE`, there is no
-prohibition of distribution of the icaclient. So i suppose, I am
-allowed to distribute it, als long as you follow the license
-restrictions, i.e. you only use it for the Citrix products it is
-intended to be used with. Therefore the icaclient is part of this
-repository. So you must accept the `LICENSE` if you use this docker
-container.
-
-Otherwise, you could also  download the client from:
-
-https://www.citrix.de/downloads/citrix-receiver/linux/receiver-for-linux-1321.html
-
-### Build Command
+## 1. Build
 
 As usual:
-        docker build --rm --force-rm -t mwaeckerlin/icaclient .
 
-## Usage; Run the Client
+       docker build --rm --force-rm -t z3dm4n/icaclient .
 
-Since it is an X11 GUI software, usage is in two steps:
+## 2. Use
+
+Since it is a X11 GUI software, usage is in two steps:
+
   1. Run a background container as server (only required once).
 
-        docker run -d --name icaclient mwaeckerlin/icaclient
-  2. Connect to the server using `ssh -X` (as many times you want). 
-     Logging in with `ssh` automatically opens a firefox window
+        `docker run -d --name icaclient z3dm4n/icaclient`
 
-        ssh -X browser@$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' icaclient)
-  3. Configure firefox (only the first time you created a container):
-      1. Open about:addons in the URL bar
-      2. Set ica-client to `allways activate`
-  4. Browse to your ICA service, start the client and enjoy.
+  2. Connect to the container using `ssh -X` (as many times you want).
+     Logging in with `ssh` automatically opens a Firefox window
 
-You can configure firefoy and set bookmarks. As long as you don't remove the container and you reuse the same container, al your changes persist. You could also tag and push your configuration to a registry to backup (should be your own private registry for your privacy).
+        `ssh -X ff@$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' icaclient)`
+
+  3. Browse to your Citrix service and open the .ica file "with" `/opt/Citrix/ICAClient/wfica.sh`.
+
+You can configure Firefox and set bookmarks. As long as you don't remove the container and you reuse the same container, all your changes persist. You could also tag and push your configuration to a registry to backup (should be your own private registry for your privacy).
